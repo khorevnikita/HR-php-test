@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -71,6 +72,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $validator = Validator::make($request->all(), [
+            'price' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => 0,
+                'errors'=>$validator->errors()
+            ]);
+        }
         $product->price = $request->price;
         $product->save();
 

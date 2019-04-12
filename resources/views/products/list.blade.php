@@ -82,6 +82,9 @@
                             let el = $("[data-product='" + id + "']");
                             el.find("button").text("$" + price);
                             toggleVisibility(el);
+                        } else {
+                            console.log(r.errors);
+                            alert("Ошибка!");
                         }
                     }
                 });

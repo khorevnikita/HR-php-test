@@ -7,6 +7,7 @@ use App\Order;
 use App\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -76,6 +77,18 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        $validator = Validator::make($request->all(), [
+            'client_email' => 'required|email',
+            'status' => 'required|in:0,10,20',
+            'partner_id'=>"required|exists:partners,id"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => 0,
+                'errors'=>$validator->errors()
+            ]);
+        }
         $order->client_email = $request->client_email;
         $order->status = $request->status;
         $order->partner_id = $request->partner_id;
