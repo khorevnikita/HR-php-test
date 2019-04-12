@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource("orders", "OrderController");
+Route::resource("products", "ProductController");
+Route::get("/weather", "WeatherController@index");
